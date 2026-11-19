@@ -1,0 +1,41 @@
+[project]
+name = "rag-an"
+version = "0.4.0"
+description = "RAG LlamaIndex sur les débats de l'Assemblée nationale (PostgreSQL/pgvector + MongoDB + Ollama)"
+requires-python = ">=3.11,<3.14"
+dependencies = [
+    "llama-index-core>=0.14",
+    "llama-index-llms-ollama",
+    "llama-index-embeddings-huggingface",
+    "llama-index-vector-stores-postgres",
+    "llama-index-storage-docstore-mongodb",
+    "pymongo>=4.8",
+    "psycopg2-binary",
+    "asyncpg",
+    "pydantic-settings>=2",
+    "sentence-transformers>=3",
+    "torch>=2.4",
+    "bm25s>=0.3.13",
+    "pystemmer>=3.1.0",
+]
+
+[project.scripts]
+rag-ingest = "rag_an.ingest:main"
+rag-chat = "rag_an.chat:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["rag_an"]
+
+# Sous Linux, torch (PyPI) utilise d'office un GPU NVIDIA s'il y en a un (pilote compatible CUDA 13), sinon le CPU.
+# Pilote NVIDIA plus ancien : décommenter ce bloc (CUDA 12.6), puis `uv lock && uv sync`.
+# [[tool.uv.index]]
+# name = "pytorch-cu126"
+# url = "https://download.pytorch.org/whl/cu126"
+# explicit = true
+#
+# [tool.uv.sources]
+# torch = { index = "pytorch-cu126" }

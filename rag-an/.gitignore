@@ -1,0 +1,6 @@
+.venv/
+__pycache__/
+.env
+# produits par rag-ingest
+silver/
+index_bm25/
